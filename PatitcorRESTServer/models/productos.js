@@ -1,38 +1,30 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 require('mongoose-currency').loadType(mongoose);
+const Currency = mongoose.Types.Currency;
 
+//Creating the schema for productos
 
-//Creating the schema for mascotas
-
-const mascotaSchema = new Schema({
+const productoSchema = new Schema({
     nombre: {
         type: String,
         required: true,
         unique: true
     },
-    edad: {
-        type: Number,
+    tipo: {
+        type: String,
+        required: true
+    },
+    descripcion: {
+        type: String,
         required: true
     },
     talla: {
         type: String,
         required: true
     },
-    sexo: {
-        type: String,
-        required: true
-    },
-    vacunacion: {
-        type: String,
-        required: true
-    },
-    esterilizado: {
-        type: String,
-        required: true
-    },
-    descripcion: {
-        type: String,
+    precio: {
+        type: Currency,
         required: true
     },
     imagen: {
@@ -43,6 +35,6 @@ const mascotaSchema = new Schema({
     timestamps: true
 });
 
-var Mascotas = mongoose.model('Mascota', mascotaSchema);
+var Productos = mongoose.model('Producto', productoSchema);
 
-module.exports = Mascotas;
+module.exports = Productos;

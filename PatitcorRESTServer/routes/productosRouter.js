@@ -2,39 +2,39 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('./cors');
 
-const Mascotas = require('../models/mascotas');
+const Productos = require('../models/productos');
 
-const mascotaRouter = express.Router();
+const productoRouter = express.Router();
 
-mascotaRouter.use(bodyParser.json());
+productoRouter.use(bodyParser.json());
 
-mascotaRouter.route('/')
+productoRouter.route('/')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
     .get(cors.cors, (req, res, next) => {
-        Mascotas.find(req.query)
-            .then((mascotas) => {
+        Productos.find(req.query)
+            .then((productos) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(mascotas);
+                res.json(productos);
             },(err) => next(err))
             .catch((err) => next(err));
     })
     .post(cors.corsWithOptions, (req, res, next)=> {
-        Mascotas.create(req.body)
-            .then((mascota) => {
-                console.log('Mascota Created ', mascota);
+        Productos.create(req.body)
+            .then((productos) => {
+                console.log('Producto Created ', productos);
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(mascota);
+                res.json(productos);
             }, (err) => next(err))
             .catch((err) => next(err));
     })
     .put(cors.corsWithOptions,(req, res, next) => {
         res.statusCode = 403;
-        res.end('PUT operation not supported on /mascotas');
+        res.end('PUT operation not supported on /productos');
     })
     .delete(cors.corsWithOptions,(req, res, next) => {
-        Mascotas.remove({})
+        Productos.remove({})
             .then((resp) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
@@ -43,35 +43,35 @@ mascotaRouter.route('/')
             .catch((err) => next(err));
     });
 
-mascotaRouter.route('/:mascotaId')
+productoRouter.route('/:productoId')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
     .get(cors.cors, (req, res, next) => {
-        Mascotas.findById(req.params.mascotaId)
-            .then((mascota) => {
+        Productos.findById(req.params.productoId)
+            .then((producto) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(mascota);
+                res.json(producto);
             }, (err) => next(err))
             .catch((err) => next(err));
     })
     .post(cors.corsWithOptions, (req, res, next)=> {
         res.statusCode = 403;
-        res.end('POST operation not supported on /mascotas/' + req.params.mascotaId);
+        res.end('POST operation not supported on /productos/' + req.params.productoId);
     })
     .put(cors.corsWithOptions,(req, res, next) => {
-        Mascotas.findByIdAndUpdate(req.params.mascotaId, {
+        Productos.findByIdAndUpdate(req.params.productoId, {
             $set: req.body
             //With new: true we get the updated dish
         }, { new: true })
-            .then((mascota) => {
+            .then((producto) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(mascota);
+                res.json(producto);
             }, (err) => next(err))
             .catch((err) => next(err));
     })
     .delete(cors.corsWithOptions,(req, res, next) => {
-        Mascotas.findByIdAndRemove(req.params.mascotaId)
+        Productos.findByIdAndRemove(req.params.productoId)
             .then((resp) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
@@ -80,6 +80,6 @@ mascotaRouter.route('/:mascotaId')
             .catch((err) => next(err));
     });
 
-module.exports = mascotaRouter;
+module.exports = productoRouter;
 
 
