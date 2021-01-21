@@ -10,13 +10,14 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var mascotaRouter = require("./routes/mascotaRouter");
 var productoRouter = require("./routes/productosRouter");
+const servicioRouter = require("./routes/serviciosRouter");
 
 const url = config.mongoUrl;
 const connect = mongoose.connect(url);
 
 connect.then((db) => {
   console.log('Connected correctly to the server');
-}, err =>{ console.log(err)});
+}, err =>{ console.log('Couldnt connect to DB!!!! ',err)});
 
 var app = express();
 
@@ -36,6 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/mascotas', mascotaRouter);
 app.use('/productos', productoRouter);
+app.use('/servicios', servicioRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
