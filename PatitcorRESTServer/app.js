@@ -44,7 +44,7 @@ app.use('/users', usersRouter);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/mascotas', mascotaRouter);
+app.use('/animales', mascotaRouter);
 app.use('/productos', productoRouter);
 app.use('/servicios', servicioRouter);
 

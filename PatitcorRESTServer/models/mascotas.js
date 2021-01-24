@@ -8,8 +8,7 @@ require('mongoose-currency').loadType(mongoose);
 const mascotaSchema = new Schema({
     nombre: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     edad: {
         type: Number,
