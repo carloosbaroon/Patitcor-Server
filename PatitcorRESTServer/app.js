@@ -6,13 +6,14 @@ var logger = require('morgan');
 var config = require('./config');
 var mongoose = require('mongoose');
 
-const multer = require("multer");
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var mascotaRouter = require("./routes/mascotaRouter");
 var productoRouter = require("./routes/productosRouter");
 const servicioRouter = require("./routes/serviciosRouter");
+const imagesRouter = require("./routes/imagesRouter");
 
 const url = config.mongoUrl;
 const connect = mongoose.connect(url);
@@ -49,29 +50,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/animales', mascotaRouter);
 app.use('/productos', productoRouter);
 app.use('/servicios', servicioRouter);
+app.use('/upload', imagesRouter);
 
-const storage = multer.diskStorage({
-  destination: "./public/images/",
-  filename: function(req, file, cb){
-    cb(null,file.originalname);
-  }
-});
-
-const upload = multer({
-  storage: storage,
-  limits:{fileSize: 1000000},
-}).single("myImage");
-
-app.post('/upload', function (req, res) {
-  upload(req, res, function (err) {
-    //iconsole.log("Request ---", req.body);
-    console.log("Request file ---", req.file);//Here you get file.
-    /*Now do where ever you want to do*/
-    if(!err) {
-      return res.send(200).end();
-    }
-  })
-})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
