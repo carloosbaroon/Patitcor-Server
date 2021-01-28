@@ -11,7 +11,7 @@ const mascotaSchema = new Schema({
         required: true
     },
     edad: {
-        type: Number,
+        type: String,
         required: true
     },
     talla: {
