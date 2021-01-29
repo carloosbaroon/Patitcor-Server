@@ -27,7 +27,15 @@ const productoSchema = new Schema({
         type: Currency,
         required: true
     },
-    imagen: {
+    imagen1: {
+        type: String,
+        required: true
+    },
+    imagen2: {
+        type: String,
+        required: true
+    },
+    imagen3: {
         type: String,
         required: true
     },

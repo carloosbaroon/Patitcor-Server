@@ -12,7 +12,15 @@ const servicioSchema = new Schema({
         type: String,
         required: true
     },
-    imagen: {
+    imagen1: {
+        type: String,
+        required: true
+    },
+    imagen2: {
+        type: String,
+        required: true
+    },
+    imagen3: {
         type: String,
         required: true
     },
