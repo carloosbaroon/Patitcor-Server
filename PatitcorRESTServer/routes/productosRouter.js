@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('./cors');
+var authenticate = require('../authenticate');
+
 
 const Productos = require('../models/productos');
 
@@ -19,7 +21,7 @@ productoRouter.route('/')
             },(err) => next(err))
             .catch((err) => next(err));
     })
-    .post(cors.corsWithOptions, (req, res, next)=> {
+    .post(cors.corsWithOptions, authenticate.verifyUser,(req, res, next)=> {
         Productos.create(req.body)
             .then((productos) => {
                 console.log('Producto Created ', productos);
@@ -29,11 +31,11 @@ productoRouter.route('/')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .put(cors.corsWithOptions,(req, res, next) => {
+    .put(cors.corsWithOptions, authenticate.verifyUser,(req, res, next) => {
         res.statusCode = 403;
         res.end('PUT operation not supported on /productos');
     })
-    .delete(cors.corsWithOptions,(req, res, next) => {
+    .delete(cors.corsWithOptions,authenticate.verifyUser, (req, res, next) => {
         Productos.remove({})
             .then((resp) => {
                 res.statusCode = 200;
@@ -54,11 +56,11 @@ productoRouter.route('/:productoId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .post(cors.corsWithOptions, (req, res, next)=> {
+    .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next)=> {
         res.statusCode = 403;
         res.end('POST operation not supported on /productos/' + req.params.productoId);
     })
-    .put(cors.corsWithOptions,(req, res, next) => {
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         Productos.findByIdAndUpdate(req.params.productoId, {
             $set: req.body
             //With new: true we get the updated dish
@@ -70,7 +72,7 @@ productoRouter.route('/:productoId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .delete(cors.corsWithOptions,(req, res, next) => {
+    .delete(cors.corsWithOptions, authenticate.verifyUser,(req, res, next) => {
         Productos.findByIdAndRemove(req.params.productoId)
             .then((resp) => {
                 res.statusCode = 200;

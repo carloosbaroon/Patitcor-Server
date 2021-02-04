@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('./cors');
 
 const Mascotas = require('../models/mascotas');
+const authenticate = require("../authenticate");
 
 const mascotaRouter = express.Router();
 
@@ -19,7 +20,7 @@ mascotaRouter.route('/')
             },(err) => next(err))
             .catch((err) => next(err));
     })
-    .post(cors.corsWithOptions, (req, res, next)=> {
+    .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next)=> {
         Mascotas.create(req.body)
             .then((mascota) => {
                 console.log('Mascota Created ', mascota);
@@ -29,11 +30,11 @@ mascotaRouter.route('/')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .put(cors.corsWithOptions,(req, res, next) => {
+    .put(cors.corsWithOptions, authenticate.verifyUser,(req, res, next) => {
         res.statusCode = 403;
         res.end('PUT operation not supported on /mascotas');
     })
-    .delete(cors.corsWithOptions,(req, res, next) => {
+    .delete(cors.corsWithOptions, authenticate.verifyUser,(req, res, next) => {
         Mascotas.remove({})
             .then((resp) => {
                 res.statusCode = 200;
@@ -54,11 +55,11 @@ mascotaRouter.route('/:mascotaId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .post(cors.corsWithOptions, (req, res, next)=> {
+    .post(cors.corsWithOptions, authenticate.verifyUser,(req, res, next)=> {
         res.statusCode = 403;
         res.end('POST operation not supported on /mascotas/' + req.params.mascotaId);
     })
-    .put(cors.corsWithOptions,(req, res, next) => {
+    .put(cors.corsWithOptions, authenticate.verifyUser,(req, res, next) => {
         Mascotas.findByIdAndUpdate(req.params.mascotaId, {
             $set: req.body
             //With new: true we get the updated dish
@@ -70,7 +71,7 @@ mascotaRouter.route('/:mascotaId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .delete(cors.corsWithOptions,(req, res, next) => {
+    .delete(cors.corsWithOptions, authenticate.verifyUser,(req, res, next) => {
         Mascotas.findByIdAndRemove(req.params.mascotaId)
             .then((resp) => {
                 res.statusCode = 200;

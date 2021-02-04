@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('./cors');
 
 const Servicios = require('../models/servicios');
+const authenticate = require("../authenticate");
 
 const servicioRouter = express.Router();
 
@@ -19,7 +20,7 @@ servicioRouter.route('/')
             },(err) => next(err))
             .catch((err) => next(err));
     })
-    .post(cors.corsWithOptions, (req, res, next)=> {
+    .post(cors.corsWithOptions, authenticate.verifyUser,(req, res, next)=> {
         Servicios.create(req.body)
             .then((servicio) => {
                 console.log('Servicio Created ', servicio);
@@ -29,11 +30,11 @@ servicioRouter.route('/')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .put(cors.corsWithOptions,(req, res, next) => {
+    .put(cors.corsWithOptions, authenticate.verifyUser,(req, res, next) => {
         res.statusCode = 403;
         res.end('PUT operation not supported on /servicios');
     })
-    .delete(cors.corsWithOptions,(req, res, next) => {
+    .delete(cors.corsWithOptions, authenticate.verifyUser,(req, res, next) => {
         Servicios.remove({})
             .then((resp) => {
                 res.statusCode = 200;
@@ -54,11 +55,11 @@ servicioRouter.route('/:servicioId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .post(cors.corsWithOptions, (req, res, next)=> {
+    .post(cors.corsWithOptions, authenticate.verifyUser,(req, res, next)=> {
         res.statusCode = 403;
         res.end('POST operation not supported on /servicios/' + req.params.servicioId);
     })
-    .put(cors.corsWithOptions,(req, res, next) => {
+    .put(cors.corsWithOptions, authenticate.verifyUser,(req, res, next) => {
         Servicios.findByIdAndUpdate(req.params.servicioId, {
             $set: req.body
             //With new: true we get the updated dish
@@ -70,7 +71,7 @@ servicioRouter.route('/:servicioId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .delete(cors.corsWithOptions,(req, res, next) => {
+    .delete(cors.corsWithOptions, authenticate.verifyUser,(req, res, next) => {
         Servicios.findByIdAndRemove(req.params.servicioId)
             .then((resp) => {
                 res.statusCode = 200;
