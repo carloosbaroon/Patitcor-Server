@@ -28,7 +28,7 @@ const uploadPromo = multer({
 }).single("myImage");
 
 imagesRouter.post('/', function (req, res) {
-    uploadPromo(req, res, function (err) {
+    upload(req, res, function (err) {
         console.log("Request file ---", req.file);//Here you get file.
         /*Now do where ever you want to do*/
         if(!err) {
