@@ -22,11 +22,7 @@ const mascotaSchema = new Schema({
         type: String,
         required: true
     },
-    vacunacion: {
-        type: String,
-        required: true
-    },
-    esterilizado: {
+    video: {
         type: String,
         required: true
     },
